@@ -9,6 +9,9 @@ import AppRouter from './routers/AppRouter';
 // Import the redux store and its elements from the related files
 import configureStore from './store/configureStore';
 
+// Import the firebase database connection
+import './firebase/firebase';
+
 // Imports the css styles from the styles.css file
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
