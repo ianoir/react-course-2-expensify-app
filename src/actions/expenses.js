@@ -1,4 +1,4 @@
-import { get, push, ref } from 'firebase/database';
+import { get, push, ref, remove, update } from 'firebase/database';
 import db from '../firebase/firebase';
 
 // ADD_EXPENSE
@@ -32,12 +32,30 @@ type: 'REMOVE_EXPENSE',
 id
 });
 
+// START_REMOVE_EXPENSE
+export const startRemoveExpense = ({ id }) => {
+    return (dispatch) => {
+        return remove(ref(db, `expenses/${id}`)).then(() => {
+            dispatch(removeExpense({ id }));
+        });
+    };
+};
+
 // EDIT_EXPENSE
 export const editExpense = (id, updates) => ({
 type: 'EDIT_EXPENSE',
 id,
 updates
 });
+
+// START_EDIT_EXPENSE
+export const startEditExpense = (id, updates) => {
+    return (dispatch) => {
+        return update(ref(db, `expenses/${id}`), updates).then(() => {
+            dispatch(editExpense(id, updates));
+        });        
+    };
+};
 
 // SET_EXPENSES
 export const setExpenses = (expenses) => ({
