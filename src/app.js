@@ -9,6 +9,9 @@ import AppRouter from './routers/AppRouter';
 // Import the redux store and its elements from the related files
 import configureStore from './store/configureStore';
 
+// Import the startSetExpense function from the actions file
+import { startSetExpenses } from './actions/expenses';
+
 // Import the firebase database connection
 import './firebase/firebase';
 
@@ -25,4 +28,8 @@ const jsx = (
     </Provider>
 );
 
-ReactDOM.render(jsx, document.getElementById('app'));
+ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
+
+store.dispatch(startSetExpenses()).then(() => {
+    ReactDOM.render(jsx, document.getElementById('app'));
+});

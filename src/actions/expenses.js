@@ -1,4 +1,4 @@
-import { push, ref } from 'firebase/database';
+import { get, push, ref } from 'firebase/database';
 import db from '../firebase/firebase';
 
 // ADD_EXPENSE
@@ -38,3 +38,26 @@ type: 'EDIT_EXPENSE',
 id,
 updates
 });
+
+// SET_EXPENSES
+export const setExpenses = (expenses) => ({
+    type: 'SET_EXPENSES',
+    expenses
+});
+
+// START_SET_EXPENSES
+export const startSetExpenses = () => {
+    return (dispatch) => {
+        return get(ref(db, 'expenses')).then((snapshot) => {
+            const expenses = [];
+    
+            snapshot.forEach((childSnapshot) => {
+                expenses.push({
+                    id: childSnapshot.key,
+                    ...childSnapshot.val()
+                });
+            });
+            dispatch(setExpenses(expenses));
+        })
+    }
+};
