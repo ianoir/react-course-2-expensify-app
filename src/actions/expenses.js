@@ -1,4 +1,4 @@
-import { push, ref } from '@firebase/database';
+import { push, ref } from 'firebase/database';
 import db from '../firebase/firebase';
 
 // ADD_EXPENSE
