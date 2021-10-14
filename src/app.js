@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 
 // Import Expensify App code from its router file
 import AppRouter, { history } from './routers/AppRouter';
+import LoadingPage from './components/LoadingPage';
 
 // Import the redux store and its elements from the related files
 import configureStore from './store/configureStore';
@@ -37,7 +38,7 @@ const renderApp = () => {
     }
 };
 
-ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
+ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 
 firebaseAuth.onAuthStateChanged(auth, (user) => {
     if (user) {

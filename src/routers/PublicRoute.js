@@ -12,7 +12,6 @@ export const PublicRoute = ({
             <Redirect to="/dashboard" />
         ) : (
             <div>
-                <h1>Expensify Login</h1>
                 <Component {...props} />
             </div>
         )
