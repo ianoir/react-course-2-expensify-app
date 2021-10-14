@@ -4,16 +4,17 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 // Import Expensify App code from its router file
-import AppRouter from './routers/AppRouter';
+import AppRouter, { history } from './routers/AppRouter';
 
 // Import the redux store and its elements from the related files
 import configureStore from './store/configureStore';
 
-// Import the startSetExpense function from the actions file
+// Import the named functions from the actions files
 import { startSetExpenses } from './actions/expenses';
+import { login, logout } from './actions/auth';
 
 // Import the firebase database connection
-import './firebase/firebase';
+import { auth, firebase, firebaseAuth } from './firebase/firebase';
 
 // Imports the css styles from the styles.css file
 import 'normalize.css/normalize.css';
@@ -28,8 +29,28 @@ const jsx = (
     </Provider>
 );
 
+let hasRendered = false;
+const renderApp = () => {
+    if (!hasRendered) {
+        ReactDOM.render(jsx, document.getElementById('app'));
+        hasRendered = true;
+    }
+};
+
 ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
 
-store.dispatch(startSetExpenses()).then(() => {
-    ReactDOM.render(jsx, document.getElementById('app'));
+firebaseAuth.onAuthStateChanged(auth, (user) => {
+    if (user) {
+        store.dispatch(login(user.uid));
+        store.dispatch(startSetExpenses()).then(() => {
+            renderApp();
+            if (history.location.pathname === '/') {
+                history.push('/dashboard');
+            }
+        });
+    } else {
+        store.dispatch(logout());
+        renderApp();
+        history.push('/');
+    }
 });
